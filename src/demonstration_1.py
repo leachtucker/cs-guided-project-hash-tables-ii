@@ -52,4 +52,47 @@ def top_k_frequent(words, k):
     List[str]
     """
     # Your code here
+    frequency_dict = {}
 
+    for word in words:
+        if word in frequency_dict:
+            frequency_dict[word] += 1
+        else:
+            frequency_dict[word] = 1
+
+    frequency_array = []
+    prevWord = None
+    for key, value in sorted(frequency_dict.items(), key=lambda word: word[1], reverse=True):
+        if prevWord is not None and prevWord[1] == value and prevWord[0] > key:
+            # Check alphabetical order
+            # if the previous word's alphabetical order is greater, let's place it after
+
+            # Pop the previous word off the array
+            item = frequency_array.pop(len(frequency_array)-1)
+
+            # Append the word we are currently on from the dict
+            frequency_array.append([key, value])
+
+            # Append the previous word back on
+            frequency_array.append(prevWord)
+        else:
+            frequency_array.append([key, value])
+
+        prevWord = [key, value]
+        # Break from the for-loop if we've appended the first k-items from the sorted items arr^
+        if len(frequency_array) >  k:
+            break
+
+    return frequency_array[0:k]
+
+words = ["lambda", "school", "rules", "lambda", "school", "rocks"]
+k = 2
+print(top_k_frequent(words, k))
+
+words = ["the", "sky", "is", "cloudy", "the", "the", "the", "cloudy", "is", "is"]
+k = 4
+print(top_k_frequent(words, k))
+
+words = ["the", "the", "the", "all", "all", "all"]
+k = 2
+print(top_k_frequent(words, k))
