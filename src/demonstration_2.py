@@ -52,5 +52,30 @@ def frequency_sort(s: str) -> str:
     str
     """
     # Your code here
+    frequency_dict = {}
 
-    
+    for letter in s:
+        if letter in frequency_dict:
+            frequency_dict[letter] += 1
+        else:
+            frequency_dict[letter] = 1
+
+    frequency_arr = []
+
+    for key, item in frequency_dict.items():
+        # Using a tuple here since it will result in faster runtimes than a two-element array/list
+        frequency_arr.append((key, item))
+
+    frequency_arr = sorted(frequency_arr, key=lambda letter: letter[1], reverse=True)
+
+    outStr = ""
+
+    for letter_tuple in frequency_arr:
+        for i in range(letter_tuple[1]):
+            outStr += letter_tuple[0]
+
+    return outStr
+
+print(frequency_sort('free'))
+print(frequency_sort('dddbbb'))
+print(frequency_sort('Bbcc'))
